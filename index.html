@@ -54,7 +54,7 @@
                             </path>
                         </svg>
                     </div>
-                    <span class="font-bold text-xl tracking-tight text-primary">Nusa Literacy</span>
+                    <span class="font-bold text-xl tracking-tight text-primary"></span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#home"
@@ -67,11 +67,31 @@
                     <a href="#local-content"
                         class="text-sm font-medium text-textMain hover:text-primary transition-colors">Local
                         Wisdom</a>
-                    <a href="writing-list.html"
+                    <a href="#local-content"
+                        class="text-sm font-medium text-textMain hover:text-primary transition-colors">Local
+                        Wisdom</a>
+
+                    <!-- Auth Protected Links -->
+                    <a href="writing-list.html" id="nav-writing"
                         class="text-sm font-medium text-textMain hover:text-primary transition-colors">Writing</a>
-                    <a href="reading-list.html"
+                    <a href="reading-list.html" id="nav-reading"
                         class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30">Start
                         Reading</a>
+
+                    <!-- Auth Buttons -->
+                    <div id="auth-container" class="flex items-center gap-4">
+                        <a href="login.html" id="btn-login"
+                            class="text-sm font-medium text-primary border border-primary px-5 py-2 rounded-full hover:bg-blue-50 transition-colors">
+                            Login
+                        </a>
+                        <div id="user-profile" class="hidden flex items-center gap-2 cursor-default">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                                <span id="user-initials">U</span>
+                            </div>
+                            <span id="user-name" class="text-sm font-medium text-textMain hidden lg:block">User</span>
+                        </div>
+                    </div>
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
@@ -128,11 +148,11 @@
                         the professional world with better comprehension and communication skills.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="reading-list.html"
+                        <a href="reading-list.html" id="hero-reading"
                             class="px-8 py-4 bg-primary text-white rounded-xl font-semibold text-lg shadow-xl hover:bg-blue-700 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                             Start Reading Now
                         </a>
-                        <a href="writing-list.html"
+                        <a href="writing-list.html" id="hero-writing"
                             class="px-8 py-4 bg-white text-primary border border-gray-200 rounded-xl font-semibold text-lg hover:bg-gray-50 hover:border-gray-300 transition-all duration-300">
                             Start Writing
                         </a>
@@ -490,6 +510,58 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { monitorAuthState, logoutUser } from './assets/js/auth.js';
+
+        const btnLogin = document.getElementById('btn-login');
+        const userProfile = document.getElementById('user-profile');
+        const userNameDisplay = document.getElementById('user-name');
+        const userInitials = document.getElementById('user-initials');
+
+        // Protected Links
+        const protectedLinks = [
+            document.getElementById('nav-reading'),
+            document.getElementById('nav-writing'),
+            document.getElementById('hero-reading'),
+            document.getElementById('hero-writing'),
+            // Mobile menu links (need to be selected carefully or added ids)
+        ];
+
+        let isLoggedIn = false;
+
+        // Monitor Auth State
+        monitorAuthState((user) => {
+            if (user) {
+                isLoggedIn = true;
+                btnLogin.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+
+                const name = user.displayName || user.email;
+                userNameDisplay.textContent = name;
+                userInitials.textContent = name.charAt(0).toUpperCase();
+            } else {
+                isLoggedIn = false;
+                btnLogin.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+
+        // Intercept Clicks on Protected Links
+        protectedLinks.forEach(link => {
+            if (link) {
+                link.addEventListener('click', (e) => {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        alert('Please login first to access this feature.');
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+        });
+
+        // Mobile Menu Logic (Updated for Auth)
+        // Note: You might want to duplicate the auth logic for mobile menu items if they are different elements
+    </script>
     <script>
         // Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-btn');
