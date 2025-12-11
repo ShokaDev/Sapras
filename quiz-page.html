@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz - Nusa Literacy</title>
+    <title>Quiz - EduCorner</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="assets/js/content-data.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: '#0F4C81',
-                        secondary: '#F5F7FA',
-                        accent: '#FFD700',
-                        textMain: '#333333',
-                        textLight: '#666666',
+                        secondary: '#F9FAFB',
                         success: '#10B981',
                         error: '#EF4444'
                     },
@@ -26,202 +25,203 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="assets/js/content-data.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 
-<body class="bg-secondary text-textMain min-h-screen flex flex-col">
+<body class="bg-secondary text-gray-800 min-h-screen flex flex-col">
 
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13" />
-                </svg>
-                <div class="flex flex-col">
-                    <span class="font-bold text-lg text-primary leading-tight">Nusa Literacy</span>
-                    <span class="text-xs text-textLight">Quiz Mode</span>
-                </div>
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-xl text-primary">EduCorner</span>
+                <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full font-medium">Quiz Mode</span>
             </div>
-            <a href="reading-list.html"
-                class="text-sm font-medium text-textLight hover:text-primary transition-colors flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-                Exit
-            </a>
+            <a href="reading-list.html" class="text-sm text-gray-500 hover:text-gray-900 font-medium">Exit Quiz</a>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col items-center justify-center p-4 py-10">
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
 
-        <div class="max-w-2xl w-full">
+        <div class="w-full max-w-2xl">
 
-            <!-- Quiz Header -->
-            <div class="text-center mb-10 fade-in">
-                <span
-                    class="inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-semibold mb-3 tracking-wide uppercase">Comprehension
-                    Check</span>
-                <h1 id="quiz-title" class="text-3xl font-bold text-gray-900 mb-2">Loading...</h1>
-                <p class="text-textLight">Answer the questions below to test your understanding from the text.</p>
+            <!-- Progress Bar -->
+            <div class="mb-6 flex items-center justify-between text-sm text-gray-500">
+                <span id="progress-text">Question 1 of 5</span>
+                <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%">
+                    </div>
+                </div>
             </div>
 
-            <!-- Quiz Card -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden fade-in"
-                style="animation-delay: 0.1s;">
+            <!-- Question Card -->
+            <div id="quiz-card" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-                <!-- Questions Container -->
-                <form id="quiz-form" class="p-8 md:p-10 space-y-10">
-                    <!-- Questions injected by JS -->
-                </form>
+                <div class="p-8">
+                    <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-900 mb-8 leading-relaxed">
+                        Loading Question...
+                    </h2>
 
-                <!-- Result Container -->
-                <div id="result-section" class="hidden p-10 text-center">
-                    <div
-                        class="w-24 h-24 rounded-full bg-green-100 mx-auto flex items-center justify-center mb-6 animate-bounce">
-                        <svg class="w-12 h-12 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Great Job!</h2>
-                    <p class="text-lg text-textLight mb-8">You answered <span id="score-text"
-                            class="font-bold text-primary text-xl">0</span> out of <span id="total-q"
-                            class="font-bold text-primary text-xl">0</span> correctly.</p>
-
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button id="retry-btn"
-                            class="px-6 py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
-                            Try Again
-                        </button>
-                        <a href="reading-list.html"
-                            class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-blue-700 shadow-md transition-all transform hover:-translate-y-1">
-                            Back to Reading List
-                        </a>
+                    <div id="answers-container" class="space-y-3">
+                        <!-- Options injected by JS -->
                     </div>
                 </div>
 
+                <!-- Footer / Next Button area -->
+                <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+                    <button id="next-btn"
+                        class="hidden px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        Next Question
+                    </button>
+                    <span id="feedback-msg" class="hidden mr-auto py-2 font-medium"></span>
+                </div>
+            </div>
+
+            <!-- Result Card (Hidden) -->
+            <div id="result-card" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                <div
+                    class="w-20 h-20 bg-green-50 text-success rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
+                <p class="text-gray-500 mb-8">You scored <span id="final-score" class="font-bold text-gray-900">0</span>
+                    out of <span id="final-total">0</span></p>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="location.reload()"
+                        class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">Retake
+                        Quiz</button>
+                    <a href="reading-list.html"
+                        class="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">Back
+                        to Reading List</a>
+                </div>
             </div>
 
         </div>
     </main>
 
-    <footer class="bg-white border-t border-gray-100 py-6 mt-auto">
-        <div class="text-center text-sm text-gray-400">
-            &copy; 2024 Nusa Literacy.
-        </div>
-    </footer>
-
     <script>
-        // Load Data
+        // --- Data Loading ---
         const urlParams = new URLSearchParams(window.location.search);
-        const contentId = urlParams.get('id');
+        const contentId = urlParams.get('id') || 'festival';
 
-        if (!contentId || !window.contentData[contentId]) {
-            alert('Content not found!');
-            window.location.href = 'reading-list.html';
+        // Load data safely
+        let data = window.contentData ? window.contentData[contentId] : null;
+        if (!data && window.contentData) data = window.contentData['festival']; // Fallback
+
+        // --- State ---
+        let currentQIndex = 0;
+        let score = 0;
+        const totalQuestions = data ? data.quiz.length : 0;
+
+        // --- DOM ---
+        const qTextEl = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const quizCard = document.getElementById('quiz-card');
+        const resultCard = document.getElementById('result-card');
+        const finalScoreEl = document.getElementById('final-score');
+        const finalTotalEl = document.getElementById('final-total');
+
+        if (!data) {
+            qTextEl.textContent = "Error loading content data.";
+        } else {
+            initGame();
         }
 
-        const data = window.contentData[contentId];
+        function initGame() {
+            renderQuestion(0);
+        }
 
-        // Init Header
-        document.getElementById('quiz-title').textContent = data.title;
+        function renderQuestion(index) {
+            if (index >= totalQuestions) {
+                showResults();
+                return;
+            }
 
-        // Init Questions
-        const form = document.getElementById('quiz-form');
+            // Update UI
+            currentQIndex = index;
+            const q = data.quiz[index];
+            qTextEl.textContent = q.q;
 
-        data.quiz.forEach((q, idx) => {
-            const opts = Object.entries(q.opts).map(([key, val]) => `
-                <label class="group relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-blue-50/30 transition-all duration-200">
-                    <input type="radio" name="q${idx}" value="${key}" required class="w-5 h-5 text-primary border-gray-300 focus:ring-primary">
-                    <span class="ml-4 text-gray-700 font-medium group-hover:text-gray-900">${val}</span>
-                </label>
-            `).join('');
+            // Progress
+            const progressPercent = ((index) / totalQuestions) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `Question ${index + 1} of ${totalQuestions}`;
 
-            const questionHTML = `
-                <div class="question-block opacity-0" style="animation: fadeIn 0.5s ease-out forwards; animation-delay: ${0.2 + (idx * 0.1)}s">
-                    <div class="flex items-start gap-4 mb-4">
-                        <span class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-sm">${idx + 1}</span>
-                        <h3 class="text-lg font-bold text-gray-900 leading-snug pt-1">${q.q}</h3>
-                    </div>
-                    <div class="grid gap-3 pl-12">
-                        ${opts}
-                    </div>
-                </div>
-            `;
-            form.insertAdjacentHTML('beforeend', questionHTML);
-        });
+            // Reset interaction
+            answersContainer.innerHTML = '';
+            nextBtn.classList.add('hidden');
+            feedbackMsg.classList.add('hidden');
+            feedbackMsg.textContent = '';
 
-        // Submit Button
-        form.insertAdjacentHTML('beforeend', `
-            <div class="pt-6 border-t border-gray-100 mt-8 opacity-0" style="animation: fadeIn 0.5s ease-out forwards; animation-delay: ${0.2 + (data.quiz.length * 0.1)}s">
-                <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                    Submit Answers
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </button>
-            </div>
-        `);
+            // Options
+            Object.entries(q.opts).forEach(([key, val]) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 flex items-center group";
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full border border-gray-300 mr-4 flex items-center justify-center text-xs text-gray-400 font-bold group-hover:border-primary group-hover:text-primary transition-colors">${key.toUpperCase()}</span>
+                    <span class="text-gray-700 font-medium">${val}</span>
+                `;
+                btn.onclick = () => handleAnswer(btn, key, q.ans);
+                answersContainer.appendChild(btn);
+            });
+        }
 
-        // Handle Submit
-        const resultSection = document.getElementById('result-section');
-        const scoreText = document.getElementById('score-text');
-        const totalQ = document.getElementById('total-q');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(form);
-            let score = 0;
-
-            data.quiz.forEach((q, i) => {
-                if (formData.get(`q${i}`) === q.ans) {
-                    score++;
-                }
+        function handleAnswer(btnElement, selected, correct) {
+            // Disable all buttons
+            const allBtns = answersContainer.querySelectorAll('button');
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-60', 'cursor-not-allowed');
             });
 
+            // Check answer
+            const isCorrect = selected === correct;
+            if (isCorrect) score++;
+
+            // Highlight selected
+            btnElement.classList.remove('opacity-60', 'hover:border-blue-300', 'hover:bg-blue-50', 'border-gray-200');
+            btnElement.classList.add('border-2', isCorrect ? 'border-green-500' : 'border-red-500', isCorrect ? 'bg-green-50' : 'bg-red-50');
+
+            // Update icon inside button
+            const icon = btnElement.querySelector('span:first-child');
+            icon.classList.remove('border-gray-300', 'text-gray-400');
+            icon.classList.add(isCorrect ? 'border-green-500' : 'border-red-500', isCorrect ? 'text-green-600' : 'text-red-600');
+            icon.textContent = isCorrect ? '✓' : '✕';
+
+            // Show feedback text
+            feedbackMsg.textContent = isCorrect ? "Correct!" : "Incorrect.";
+            feedbackMsg.className = `mr-auto py-2 font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedbackMsg.classList.remove('hidden');
+
+            // Show Next Button
+            nextBtn.textContent = (currentQIndex === totalQuestions - 1) ? "Finish Quiz" : "Next Question";
+            nextBtn.classList.remove('hidden');
+            nextBtn.onclick = () => renderQuestion(currentQIndex + 1);
+        }
+
+        function showResults() {
+            quizCard.classList.add('hidden');
+            resultCard.classList.remove('hidden');
+            finalScoreEl.textContent = score;
+            finalTotalEl.textContent = totalQuestions;
+            progressBar.style.width = '100%';
+
             // Save Progress
-            const progress = { score, total: data.quiz.length, date: new Date().toISOString() };
+            const progress = { score, total: totalQuestions, date: new Date().toISOString() };
             localStorage.setItem(`reading_progress_${contentId}`, JSON.stringify(progress));
-
-            // Show Results
-            form.classList.add('hidden');
-            resultSection.classList.remove('hidden');
-            scoreText.textContent = score;
-            totalQ.textContent = data.quiz.length;
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Retry
-        document.getElementById('retry-btn').addEventListener('click', () => {
-            form.reset();
-            resultSection.classList.add('hidden');
-            form.classList.remove('hidden');
-        });
+        }
 
     </script>
 </body>
