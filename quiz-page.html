@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Nusa Literacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C81',
+                        secondary: '#F5F7FA',
+                        accent: '#FFD700',
+                        textMain: '#333333',
+                        textLight: '#666666',
+                        success: '#10B981',
+                        error: '#EF4444'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="assets/js/content-data.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-secondary text-textMain min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13" />
+                </svg>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg text-primary leading-tight">Nusa Literacy</span>
+                    <span class="text-xs text-textLight">Quiz Mode</span>
+                </div>
+            </div>
+            <a href="reading-list.html"
+                class="text-sm font-medium text-textLight hover:text-primary transition-colors flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                Exit
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 py-10">
+
+        <div class="max-w-2xl w-full">
+
+            <!-- Quiz Header -->
+            <div class="text-center mb-10 fade-in">
+                <span
+                    class="inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-semibold mb-3 tracking-wide uppercase">Comprehension
+                    Check</span>
+                <h1 id="quiz-title" class="text-3xl font-bold text-gray-900 mb-2">Loading...</h1>
+                <p class="text-textLight">Answer the questions below to test your understanding from the text.</p>
+            </div>
+
+            <!-- Quiz Card -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden fade-in"
+                style="animation-delay: 0.1s;">
+
+                <!-- Questions Container -->
+                <form id="quiz-form" class="p-8 md:p-10 space-y-10">
+                    <!-- Questions injected by JS -->
+                </form>
+
+                <!-- Result Container -->
+                <div id="result-section" class="hidden p-10 text-center">
+                    <div
+                        class="w-24 h-24 rounded-full bg-green-100 mx-auto flex items-center justify-center mb-6 animate-bounce">
+                        <svg class="w-12 h-12 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Great Job!</h2>
+                    <p class="text-lg text-textLight mb-8">You answered <span id="score-text"
+                            class="font-bold text-primary text-xl">0</span> out of <span id="total-q"
+                            class="font-bold text-primary text-xl">0</span> correctly.</p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button id="retry-btn"
+                            class="px-6 py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                            Try Again
+                        </button>
+                        <a href="reading-list.html"
+                            class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-blue-700 shadow-md transition-all transform hover:-translate-y-1">
+                            Back to Reading List
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-6 mt-auto">
+        <div class="text-center text-sm text-gray-400">
+            &copy; 2024 Nusa Literacy.
+        </div>
+    </footer>
+
+    <script>
+        // Load Data
+        const urlParams = new URLSearchParams(window.location.search);
+        const contentId = urlParams.get('id');
+
+        if (!contentId || !window.contentData[contentId]) {
+            alert('Content not found!');
+            window.location.href = 'reading-list.html';
+        }
+
+        const data = window.contentData[contentId];
+
+        // Init Header
+        document.getElementById('quiz-title').textContent = data.title;
+
+        // Init Questions
+        const form = document.getElementById('quiz-form');
+
+        data.quiz.forEach((q, idx) => {
+            const opts = Object.entries(q.opts).map(([key, val]) => `
+                <label class="group relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-blue-50/30 transition-all duration-200">
+                    <input type="radio" name="q${idx}" value="${key}" required class="w-5 h-5 text-primary border-gray-300 focus:ring-primary">
+                    <span class="ml-4 text-gray-700 font-medium group-hover:text-gray-900">${val}</span>
+                </label>
+            `).join('');
+
+            const questionHTML = `
+                <div class="question-block opacity-0" style="animation: fadeIn 0.5s ease-out forwards; animation-delay: ${0.2 + (idx * 0.1)}s">
+                    <div class="flex items-start gap-4 mb-4">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-sm">${idx + 1}</span>
+                        <h3 class="text-lg font-bold text-gray-900 leading-snug pt-1">${q.q}</h3>
+                    </div>
+                    <div class="grid gap-3 pl-12">
+                        ${opts}
+                    </div>
+                </div>
+            `;
+            form.insertAdjacentHTML('beforeend', questionHTML);
+        });
+
+        // Submit Button
+        form.insertAdjacentHTML('beforeend', `
+            <div class="pt-6 border-t border-gray-100 mt-8 opacity-0" style="animation: fadeIn 0.5s ease-out forwards; animation-delay: ${0.2 + (data.quiz.length * 0.1)}s">
+                <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    Submit Answers
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        `);
+
+        // Handle Submit
+        const resultSection = document.getElementById('result-section');
+        const scoreText = document.getElementById('score-text');
+        const totalQ = document.getElementById('total-q');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            let score = 0;
+
+            data.quiz.forEach((q, i) => {
+                if (formData.get(`q${i}`) === q.ans) {
+                    score++;
+                }
+            });
+
+            // Save Progress
+            const progress = { score, total: data.quiz.length, date: new Date().toISOString() };
+            localStorage.setItem(`reading_progress_${contentId}`, JSON.stringify(progress));
+
+            // Show Results
+            form.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            scoreText.textContent = score;
+            totalQ.textContent = data.quiz.length;
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Retry
+        document.getElementById('retry-btn').addEventListener('click', () => {
+            form.reset();
+            resultSection.classList.add('hidden');
+            form.classList.remove('hidden');
+        });
+
+    </script>
+</body>
+
+</html>

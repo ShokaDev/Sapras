@@ -28,16 +28,15 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="assets/js/content-data.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
-
-    /* Removed glossary/tooltip css */
   </style>
 </head>
 
-<body class="bg-secondary text-textMain min-h-screen">
+<body class="bg-secondary text-textMain min-h-screen flex flex-col">
 
   <!-- NAV -->
   <nav class="bg-white shadow sticky top-0 z-50">
@@ -50,144 +49,106 @@
         <span class="font-bold text-lg text-primary">Nusa Literacy</span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="reading-list.html" class="text-sm text-textLight hover:text-primary">Back to list</a>
+        <a href="reading-list.html"
+          class="text-sm font-medium text-textLight hover:text-primary transition-colors flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+          </svg>
+          Back to list
+        </a>
       </div>
     </div>
   </nav>
 
   <!-- MAIN -->
-  <main class="max-w-4xl mx-auto px-4 py-10">
+  <main class="max-w-4xl mx-auto px-4 py-10 flex-grow">
 
     <!-- image header -->
-    <figure class="mb-8 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
-      <img id="article-img" src="" alt="Article Header" loading="lazy" class="w-full h-80 object-cover bg-gray-200">
+    <figure class="mb-8 rounded-2xl overflow-hidden border border-gray-100 shadow-sm relative group">
+      <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+      <img id="article-img" src="" alt="Article Header" loading="lazy"
+        class="w-full h-80 object-cover bg-gray-200 transition-transform duration-700 group-hover:scale-105">
     </figure>
 
     <!-- header card -->
-    <div class="bg-white rounded-2xl p-6  mb-8 border border-gray-100 shadow-sm text-center">
+    <div
+      class="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-sm text-center transform translate-y-[-40px] shadow-lg max-w-3xl mx-auto relative z-10">
       <span id="article-cat"
-        class="inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-semibold mb-3">Category</span>
-      <h1 id="article-title" class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Loading Title...</h1>
+        class="inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-semibold mb-3 tracking-wide uppercase">Category</span>
+      <h1 id="article-title" class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 leading-tight">Loading Title...
+      </h1>
       <div class="flex justify-center items-center gap-4 text-sm text-textLight">
-        <span id="article-date">Date</span>
+        <span id="article-date" class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          Date
+        </span>
         <span>•</span>
-        <span id="article-readtime">Mins Read</span>
+        <span id="article-readtime" class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Mins Read
+        </span>
       </div>
     </div>
 
     <!-- article content -->
     <article id="article-content"
-      class="bg-white rounded-2xl p-8 md:p-12 mb-10 border border-gray-100 text-lg leading-loose text-gray-800 font-serif">
+      class="bg-white rounded-2xl p-8 md:p-12 mb-10 border border-gray-100 text-lg leading-loose text-gray-800 font-serif shadow-sm">
       <!-- content injected by JS -->
     </article>
 
-    <!-- quiz -->
-    <div class="bg-white rounded-2xl p-8 md:p-10 border border-gray-100 shadow-lg max-w-3xl mx-auto">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold mb-2">Comprehension Quiz</h2>
-        <p class="text-textLight">Test your understanding of the text.</p>
-      </div>
-
-      <form id="quiz-form" class="space-y-8">
-        <!-- questions injected by JS -->
-      </form>
-
-      <!-- result -->
-      <div id="result-section" class="hidden text-center mt-6">
-        <div class="w-20 h-20 rounded-full bg-green-100 mx-auto flex items-center justify-center mb-4">
-          <svg class="w-10 h-10 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    <!-- Call to Acton: Take Quiz -->
+    <div
+      class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 md:p-12 text-white text-center shadow-lg relative overflow-hidden">
+      <div class="relative z-10">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Finished Reading?</h2>
+        <p class="text-blue-100 mb-8 max-w-xl mx-auto text-lg">Test your understanding of the text by taking a quick
+          comprehension quiz.</p>
+        <button id="start-quiz-btn"
+          class="px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg shadow-lg hover:bg-gray-50 hover:shadow-xl transition-all transform hover:-translate-y-1 inline-flex items-center gap-2">
+          Take the Quiz
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
           </svg>
-        </div>
-        <h3 class="text-xl font-bold mb-2">Great Job!</h3>
-        <p class="text-textLight mb-6">You answered <span id="score-text" class="font-bold text-primary">0</span> out of
-          <span id="total-q" class="font-bold text-primary">0</span> correctly.</p>
-
-        <div class="flex justify-center gap-4">
-          <button id="try-again" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Re-take
-            Quiz</button>
-          <a href="reading-list.html"
-            class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 shadow-lg">Next Article</a>
-        </div>
+        </button>
       </div>
-
+      <!-- Decorative bubbles -->
+      <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-black/10 rounded-full blur-3xl"></div>
     </div>
+
   </main>
 
   <!-- footer -->
-  <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-20">
-    <div class="max-w-4xl mx-auto px-4 text-center text-sm">&copy; 2024 Nusa Literacy. All rights reserved.</div>
+  <footer class="bg-white border-t border-gray-100 py-8 mt-auto">
+    <div class="max-w-4xl mx-auto px-4 text-center text-sm text-gray-400">&copy; 2024 Nusa Literacy. All rights
+      reserved.</div>
   </footer>
 
   <script>
-    // ----------- Data Source (Mock) -----------
-    // In a real app, this might come from a fetch or more comprehensive data file
-    const contentData = {
-      'ferry': {
-        title: 'Ferry Safety Manual',
-        category: 'Transportation',
-        date: 'Updated Dec 2023',
-        readTime: '5 Mins Read',
-        img: 'assets/img/kapal.jpeg',
-        content: `
-          <p><strong>Introduction</strong></p>
-          <p>This manual provides essential safety information for passengers traveling on ferries between Batam and Singapore. Please read carefully.</p>
-          <h3>1. Life Jackets</h3>
-          <p>Life jackets are located under your seat. In case of emergency, retrieve the jacket, place it over your head, and fasten the straps securely. Do not inflate the jacket while inside the cabin.</p>
-          <h3>2. Emergency Exits</h3>
-          <p>Exits are clearly marked with green signs. Locate the nearest exit upon boarding. Crew members will direct you during an evacuation.</p>
-          <h3>3. Prohibition</h3>
-          <p>Smoking is strictly prohibited in the passenger cabin. Please use designated smoking areas on the open deck if available.</p>
-        `,
-        quiz: [
-          { q: 'Where are life jackets located?', opts: { a: 'Overhead bin', b: 'Under your seat', c: 'At the counter' }, ans: 'b' },
-          { q: 'When should you inflate the life jacket?', opts: { a: 'Inside the cabin', b: 'Before boarding', c: 'Outside the cabin' }, ans: 'c' },
-        ]
-      },
-      'hotel': {
-        title: 'Hotel Check-in Procedure',
-        category: 'Hospitality',
-        date: 'Nov 15, 2023',
-        readTime: '7 Mins Read',
-        img: 'assets/img/hotel.jpg',
-        content: `
-          <p><strong>Standard Operating Procedure for Front Desk Agents</strong></p>
-          <p>The check-in process is the first impression a guest has of the hotel. It must be efficient and welcoming.</p>
-          <h3>Step 1: Greeting</h3>
-          <p>Greet the guest with a warm smile and standard phrase: "Welcome to Grand Batam Hotel, how may I assist you today?"</p>
-          <h3>Step 2: Verification</h3>
-          <p>Request the guest's ID card or passport and booking confirmation. Verify the dates and room type in the system.</p>
-          <h3>Step 3: Registration</h3>
-          <p>Ask the guest to sign the registration card. Confirm the payment method and take a deposit if required.</p>
-        `,
-        quiz: [
-          { q: 'What is the first step?', opts: { a: 'Ask for ID', b: 'Greeting', c: 'Payment' }, ans: 'b' },
-          { q: 'What must be verified?', opts: { a: 'Dates and Room Type', b: 'Flight number', c: 'Shoe size' }, ans: 'a' }
-        ]
-      },
-      'festival': {
-        title: 'Binut Culture Carnival 2022',
-        category: 'Culture',
-        date: 'Oct 30, 2022',
-        readTime: '6 Mins Read',
-        img: 'assets/img/gunung.jpg',
-        content: `
-        <p><strong>DISKOMINFO KEPRI</strong> – A variety of cultural attraction performances successfully drew thousands of spectators during the 2022 Binut Culture Carnival, an event aimed at introducing Malay culture to both local and international tourists.</p>
-        <p>The 2022 Binut (North Bintan) Culture Carnival is the first event of its kind ever held in Bintan Regency. It received full support from the Chairperson of the Riau Islands Provincial PKK Team, Hj. Dewi Kumalasari Ansar.</p>
-        <p>“We give our highest appreciation for the overwhelming enthusiasm shown by the people of Bintan Regency who packed the entire Anwarika Field to watch the Binut Culture Carnival,” Dewi Ansar said during the event.</p>
-        <p>She also stated that the carnival would allow Bintan Regency to expand activities that showcase Malay and Nusantara archipelago culture to the wider public.</p>
-        `,
-        quiz: [
-          { q: 'What was the main aim of the carnival?', opts: { a: 'To introduce Malay culture', b: 'To announce a new government', c: 'To hold a sports competition' }, ans: 'a' },
-          { q: 'Where was the event held?', opts: { a: 'Jakarta', b: 'Anwarika Field, Tanjung Uban', c: 'Bali' }, ans: 'b' }
-        ]
-      }
-    };
-
     // Load Data
     const urlParams = new URLSearchParams(window.location.search);
     const contentId = urlParams.get('id') || 'festival';
-    const data = contentData[contentId] || contentData['festival'];
+
+    // Check global data first (from content-data.js)
+    let data = window.contentData[contentId];
+
+    // Fallback: Check localStorage for custom content if not found in global
+    if (!data) {
+      const customContent = JSON.parse(localStorage.getItem('custom_content') || '[]');
+      data = customContent.find(c => c.id === contentId);
+    }
+
+    // Default Fallback
+    if (!data) {
+      data = window.contentData['festival'];
+    }
 
     // Render Article
     document.title = `${data.title} - Nusa Literacy`;
@@ -198,59 +159,9 @@
     document.getElementById('article-content').innerHTML = data.content;
     document.getElementById('article-img').src = data.img;
 
-    // Render Quiz
-    const quizForm = document.getElementById('quiz-form');
-    data.quiz.forEach((q, idx) => {
-      const opts = Object.entries(q.opts).map(([k, v]) => `
-        <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
-          <input required type="radio" name="q${idx}" value="${k}" class="w-5 h-5 text-primary border-gray-300 focus:ring-primary" />
-          <span class="ml-3 font-medium text-gray-700 text-lg">${v}</span>
-        </label>`).join('');
-
-      quizForm.insertAdjacentHTML('beforeend', `
-        <div class="animate-fade-in">
-          <p class="font-bold text-lg mb-4 text-gray-900">${idx + 1}. ${q.q}</p>
-          <div class="grid gap-3">${opts}</div>
-        </div>
-      `);
-    });
-
-    // Submit Button
-    quizForm.insertAdjacentHTML('beforeend', `
-      <div class="pt-4">
-        <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1">Check Answers</button>
-      </div>
-    `);
-
-    // Logic
-    const resultSection = document.getElementById('result-section');
-    const scoreText = document.getElementById('score-text');
-    const totalQ = document.getElementById('total-q');
-    totalQ.textContent = data.quiz.length;
-
-    quizForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const form = new FormData(quizForm);
-      let score = 0;
-      data.quiz.forEach((q, i) => {
-        if (form.get(`q${i}`) === q.ans) score++;
-      });
-
-      // Save progress
-      const progress = { score, total: data.quiz.length, date: new Date().toISOString() };
-      localStorage.setItem(`reading_progress_${contentId}`, JSON.stringify(progress));
-
-      // Show result
-      quizForm.classList.add('hidden');
-      resultSection.classList.remove('hidden');
-      scoreText.textContent = score;
-      resultSection.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    document.getElementById('try-again').addEventListener('click', () => {
-      quizForm.reset();
-      quizForm.classList.remove('hidden');
-      resultSection.classList.add('hidden');
+    // Quiz Navigation
+    document.getElementById('start-quiz-btn').addEventListener('click', () => {
+      window.location.href = `quiz-page.html?id=${contentId}`;
     });
 
   </script>

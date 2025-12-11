@@ -268,257 +268,53 @@
         </div>
     </main>
 
+    <!-- Content Section -->
+    <main class="flex-grow py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        </div>
+        </div>
+    </main>
+
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <p class="text-sm">&copy; 2024 Reading Corner Vokasi. All rights reserved.</p>
-            <div class="flex space-x-6 mt-4 md:mt-0 text-sm">
-                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                <p class="text-lg text-textLight max-w-2xl mx-auto">Choose reading materials based on Riau Islands'
-                    local
-                    wisdom. Improve your understanding of the working world around you.</p>
-            </div>
-            </header>
+    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-20">
+        <div class="max-w-4xl mx-auto px-4 text-center text-sm">&copy; 2024 Nusa Literacy. All rights reserved.
+        </div>
+    </footer>
 
-            <!-- Content Section -->
-            <main class="flex-grow py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    <!-- Filters (Visual Only) -->
-                    <div class="flex flex-wrap gap-3 mb-10 justify-center">
-                        <button
-                            class="px-4 py-2 rounded-full bg-primary text-white font-medium text-sm shadow-md">All</button>
-                        <button
-                            class="px-4 py-2 rounded-full bg-white text-textLight border border-gray-200 font-medium text-sm hover:bg-gray-50 hover:text-primary transition-colors">Transportation</button>
-                        <button
-                            class="px-4 py-2 rounded-full bg-white text-textLight border border-gray-200 font-medium text-sm hover:bg-gray-50 hover:text-primary transition-colors">Hospitality</button>
-                        <button
-                            class="px-4 py-2 rounded-full bg-white text-textLight border border-gray-200 font-medium text-sm hover:bg-gray-50 hover:text-primary transition-colors">Culture</button>
-                    </div>
+    <script>
+        // Check Auth (Removed)
+        // const role = localStorage.getItem('user_role');
+        // if (!role) {
+        //     window.location.href = 'login.html';
+        // }
 
-                    <!-- Grid -->
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-                        <!-- Card 1: Ferry Safety -->
-                        <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group relative"
-                            data-id="ferry">
-                            <div class="h-48 bg-blue-900 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors">
-                                </div>
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="inline-block px-3 py-1 bg-accent text-gray-900 text-xs font-bold rounded-full">Transportation</span>
-                                </div>
-                                <div class="w-full h-full flex items-center justify-center text-white/20">
-                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-6 flex-grow flex flex-col">
-                                <h3
-                                    class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                                    Ferry Safety Manual</h3>
-                                <p class="text-textLight text-sm mb-4 line-clamp-3 flex-grow">Standard operating
-                                    procedures
-                                    (SOP) for safety on Batam-Singapore ferry routes, including life jacket usage.</p>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                                    <span class="text-xs text-gray-400 font-medium flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        5 Mins
-                                    </span>
-                                    <a href="read-page.html?id=ferry"
-                                        class="text-primary font-bold text-sm hover:text-blue-700 flex items-center">
-                                        Read Now
-                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Progress Badge (Hidden by default) -->
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm hidden"
-                                id="badge-ferry">
-                                <span class="text-xs font-bold text-success flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Done <span class="score-val ml-1"></span>
-                                </span>
-                            </div>
-                        </div>
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-                        <!-- Card 2: Hotel Check-in -->
-                        <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group relative"
-                            data-id="hotel">
-                            <div class="h-48 bg-teal-800 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors">
-                                </div>
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="inline-block px-3 py-1 bg-accent text-gray-900 text-xs font-bold rounded-full">Hospitality</span>
-                                </div>
-                                <div class="w-full h-full flex items-center justify-center text-white/20">
-                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z">
-                                        </path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-6 flex-grow flex flex-col">
-                                <h3
-                                    class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                                    Hotel Check-in Procedure</h3>
-                                <p class="text-textLight text-sm mb-4 line-clamp-3 flex-grow">Standard dialogues and
-                                    steps for
-                                    guest reception (Front Office) in starred hotels in Batam area.</p>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                                    <span class="text-xs text-gray-400 font-medium flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        7 Mins
-                                    </span>
-                                    <a href="read-page.html?id=hotel"
-                                        class="text-primary font-bold text-sm hover:text-blue-700 flex items-center">
-                                        Read Now
-                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Progress Badge -->
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm hidden"
-                                id="badge-hotel">
-                                <span class="text-xs font-bold text-success flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Done <span class="score-val ml-1"></span>
-                                </span>
-                            </div>
-                        </div>
+        function logout() {
+            // localStorage.removeItem('user_role');
+            window.location.href = 'index.html';
+        }
 
-                        <!-- Card 3: Bintan Literary Festival -->
-                        <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group relative"
-                            data-id="festival">
-                            <div class="h-48 bg-indigo-900 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors">
-                                </div>
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="inline-block px-3 py-1 bg-accent text-gray-900 text-xs font-bold rounded-full">Culture</span>
-                                </div>
-                                <div class="w-full h-full flex items-center justify-center text-white/20">
-                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
-                                            clip-rule="evenodd"></path>
-                                        <path
-                                            d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.435-.46-7.92-1.308z">
-                                        </path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-6 flex-grow flex flex-col">
-                                <h3
-                                    class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                                    International Bintan Mountain Literary Festival 2025</h3>
-                                <p class="text-textLight text-sm mb-4 line-clamp-3 flex-grow">A collaboration between
-                                    government
-                                    and writers to preserve Malay culture in Tanjungpinang.</p>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                                    <span class="text-xs text-gray-400 font-medium flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        4 Mins
-                                    </span>
-                                    <a href="read-page.html?id=festival"
-                                        class="text-primary font-bold text-sm hover:text-blue-700 flex items-center">
-                                        Read Now
-                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Progress Badge -->
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm hidden"
-                                id="badge-festival">
-                                <span class="text-xs font-bold text-success flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Done <span class="score-val ml-1"></span>
-                                </span>
-                            </div>
-                        </div>
+        // Add Logout Button (Disabled for now)
+        // const navLinks = document.querySelector('.hidden.md\\:flex');
+        // const mobileNav = document.querySelector('#mobile-menu .space-y-2');
+        // ...
 
-                    </div>
-                </div>
-            </main>
+        // Check Local Storage for Progress & Custom Content
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Load Custom Content
+            const customContent = JSON.parse(localStorage.getItem('custom_content') || '[]');
+            const grid = document.querySelector('.grid');
 
-            <!-- Footer -->
-            <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-auto">
-                <div
-                    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-sm">&copy; 2024 Nusa Literacy. All rights reserved.</p>
-                    <div class="flex space-x-6 mt-4 md:mt-0 text-sm">
-                        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
-                    </div>
-                </div>
-            </footer>
-
-            <script>
-                // Check Auth (Removed)
-                // const role = localStorage.getItem('user_role');
-                // if (!role) {
-                //     window.location.href = 'login.html';
-                // }
-
-                // Mobile Menu Toggle
-                const btn = document.getElementById('mobile-menu-btn');
-                const menu = document.getElementById('mobile-menu');
-
-                btn.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
-                });
-
-                function logout() {
-                    // localStorage.removeItem('user_role');
-                    window.location.href = 'index.html';
-                }
-
-                // Add Logout Button (Disabled for now)
-                // const navLinks = document.querySelector('.hidden.md\\:flex');
-                // const mobileNav = document.querySelector('#mobile-menu .space-y-2');
-                // ...
-
-                // Check Local Storage for Progress & Custom Content
-                document.addEventListener('DOMContentLoaded', () => {
-                    // 1. Load Custom Content
-                    const customContent = JSON.parse(localStorage.getItem('custom_content') || '[]');
-                    const grid = document.querySelector('.grid');
-
-                    customContent.forEach(item => {
-                        const cardHTML = `
+            customContent.forEach(item => {
+                const cardHTML = `
                 <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group relative" data-id="${item.id}">
                     <div class="h-48 bg-gray-800 relative overflow-hidden">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
@@ -551,25 +347,25 @@
                     </div>
                 </div>
                 `;
-                        grid.insertAdjacentHTML('beforeend', cardHTML);
-                    });
+                grid.insertAdjacentHTML('beforeend', cardHTML);
+            });
 
-                    // 2. Check Progress
-                    const ids = ['ferry', 'hotel', 'festival', ...customContent.map(c => c.id)];
+            // 2. Check Progress
+            const ids = ['ferry', 'hotel', 'festival', ...customContent.map(c => c.id)];
 
-                    ids.forEach(id => {
-                        const progress = localStorage.getItem(`reading_progress_${id}`);
-                        if (progress) {
-                            const data = JSON.parse(progress);
-                            const badge = document.getElementById(`badge-${id}`);
-                            if (badge) {
-                                badge.classList.remove('hidden');
-                                badge.querySelector('.score-val').textContent = `(${data.score}/3)`;
-                            }
-                        }
-                    });
-                });
-            </script>
+            ids.forEach(id => {
+                const progress = localStorage.getItem(`reading_progress_${id}`);
+                if (progress) {
+                    const data = JSON.parse(progress);
+                    const badge = document.getElementById(`badge-${id}`);
+                    if (badge) {
+                        badge.classList.remove('hidden');
+                        badge.querySelector('.score-val').textContent = `(${data.score}/3)`;
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
