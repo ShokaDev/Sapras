@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Reading Corner Vokasi</title>
+    <title>Login - Nusa Literacy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,8 +12,12 @@
                 extend: {
                     colors: {
                         primary: '#0F4C81',
-                        secondary: '#F8FAFC',
-                        accent: '#FFD700',
+                        secondary: '#F8FAFC', // Very Light Blue/Gray (Light Mode)
+                        accent: '#FFD700', // Gold
+                        textMain: '#1E293B', // Slate 800
+                        textLight: '#64748B', // Slate 500
+                        cardBg: '#FFFFFF',
+                        inputBg: '#F1F5F9' // Slate 100
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -26,247 +30,176 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            /* secondary/light */
+            color: #1E293B;
+            /* textMain */
         }
 
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hero-pattern {
+            background-image: radial-gradient(#0F4C81 0.5px, transparent 0.5px), radial-gradient(#0F4C81 0.5px, #F8FAFC 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-color: #F8FAFC;
         }
     </style>
 </head>
 
-<body class="bg-secondary min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 hero-pattern relative overflow-hidden">
+
+    <!-- Background Decor (Light Theme) -->
+    <div
+        class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-blue-100/50 to-transparent pointer-events-none">
+    </div>
+    <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl pointer-events-none"></div>
 
     <div
-        class="max-w-5xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+        class="max-w-6xl w-full bg-white backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[650px] border border-gray-100">
 
-        <!-- Left Side: Illustration/Brand -->
-        <div class="md:w-1/2 bg-primary p-12 flex flex-col justify-between text-white relative overflow-hidden">
-            <div
-                class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]">
-            </div>
-
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Left Side: Content -->
+        <div class="md:w-1/2 p-12 flex flex-col justify-between relative z-10 bg-white">
+            <div>
+                <a href="index.html" class="flex items-center gap-3 mb-12 group w-fit">
+                    <div
+                        class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                             </path>
                         </svg>
                     </div>
-                    <span class="font-bold text-xl tracking-wide">Reading Corner Vokasi</span>
-                </div>
+                    <span
+                        class="font-bold text-xl tracking-tight text-primary group-hover:text-blue-700 transition-colors">Nusa
+                        Literacy</span>
+                </a>
 
-                <h1 class="text-4xl lg:text-5xl font-bold mb-6 leading-tight">Master English for Your Career</h1>
-                <p class="text-blue-100 text-lg leading-relaxed">Access authentic industry texts, interactive quizzes,
-                    and track your progress in one place.</p>
-            </div>
-
-            <div class="relative z-10 mt-12 space-y-4">
-                <div class="flex items-center gap-4 p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
-                    <div
-                        class="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-primary font-bold shadow-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-bold">Instant Feedback</p>
-                        <p class="text-sm text-blue-100">Get your quiz scores immediately</p>
-                    </div>
+                <div class="space-y-6">
+                    <span
+                        class="inline-block px-3 py-1 bg-blue-50 text-primary text-xs font-bold rounded-full border border-blue-100">START
+                        FOR FREE</span>
+                    <h1 class="text-4xl lg:text-5xl font-bold leading-tight text-gray-900">
+                        Log in to your <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">Account.</span>
+                    </h1>
+                    <p class="text-textLight text-lg max-w-md">
+                        Continue your journey in mastering vocational English. Access your reading list and track your
+                        progress.
+                    </p>
                 </div>
             </div>
 
-            <!-- Decorative Circles -->
-            <div
-                class="absolute -bottom-20 -right-20 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50">
-            </div>
-            <div
-                class="absolute top-20 -left-20 w-64 h-64 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50">
+            <div class="mt-12 text-sm text-textLight">
+                &copy; 2024 Nusa Literacy. All rights reserved.
             </div>
         </div>
 
-        <!-- Right Side: Login Form -->
-        <div class="md:w-1/2 p-12 flex flex-col justify-center bg-white relative">
-            <div id="roleSelection" class="fade-in">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-                    <p class="text-gray-500">Please select your role to continue.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <button onclick="selectRole('student')"
-                        class="w-full group p-6 border-2 border-gray-100 rounded-2xl hover:border-primary hover:bg-blue-50 transition-all duration-300 flex items-center gap-5 text-left">
-                        <div
-                            class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222">
-                                </path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">I am
-                                a Student</h3>
-                            <p class="text-gray-500 text-sm mt-1">Access reading materials and take quizzes</p>
-                        </div>
-                        <div class="ml-auto text-gray-300 group-hover:text-primary transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                        </div>
-                    </button>
-
-                    <button onclick="selectRole('teacher')"
-                        class="w-full group p-6 border-2 border-gray-100 rounded-2xl hover:border-primary hover:bg-blue-50 transition-all duration-300 flex items-center gap-5 text-left">
-                        <div
-                            class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">I am
-                                a Teacher</h3>
-                            <p class="text-gray-500 text-sm mt-1">Upload texts and manage content</p>
-                        </div>
-                        <div class="ml-auto text-gray-300 group-hover:text-primary transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                        </div>
-                    </button>
-                </div>
-
-                <div class="mt-8 text-center">
-                    <a href="index.html"
-                        class="text-sm font-medium text-gray-400 hover:text-primary transition-colors">Back to Home</a>
-                </div>
+        <!-- Right Side: Form -->
+        <div class="md:w-1/2 bg-gray-50 p-12 flex flex-col justify-center border-l border-gray-100 relative">
+            <div class="absolute top-0 right-0 p-8">
+                <p class="text-textLight text-sm">Not a member? <a href="register.html"
+                        class="text-primary hover:text-blue-700 font-semibold transition-colors">Register now</a></p>
             </div>
 
-            <div id="loginForm" class="hidden fade-in">
-                <button onclick="backToSelection()"
-                    class="mb-8 text-gray-400 hover:text-primary flex items-center gap-2 text-sm font-medium transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                        </path>
-                    </svg>
-                    Back to Role Selection
-                </button>
-
-                <div class="text-center mb-8">
-                    <div id="roleIcon"
-                        class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"></div>
-                    <h2 id="roleTitle" class="text-2xl font-bold text-gray-900">Login</h2>
-                    <p class="text-gray-500 text-sm mt-1">Enter your password to continue</p>
-                </div>
-
-                <form onsubmit="handleLogin(event)" class="space-y-6">
+            <div class="max-w-md w-full mx-auto">
+                <form id="loginForm" class="space-y-6">
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" required
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Enter your password">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <div class="relative group">
+                            <input type="email" id="email" required
+                                class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm"
+                                placeholder="name@example.com">
                             <div
-                                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                    </path>
+                                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                                 </svg>
                             </div>
                         </div>
-                        <p id="errorMessage" class="text-red-500 text-sm mt-2 hidden">Incorrect password. Please try
-                            again.</p>
-                        <p class="text-xs text-gray-400 mt-2">Hint: Student (siswa123), Teacher (admin123)</p>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-primary text-white py-3.5 rounded-xl font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-                        Login to Dashboard
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div class="relative group">
+                            <input type="password" id="password" required
+                                class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm"
+                                placeholder="••••••••">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
+                                onclick="togglePassword()">
+                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage"
+                        class="hidden p-3 rounded-lg bg-red-50 text-red-600 border border-red-100 text-sm"></div>
+
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-primary hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transform hover:-translate-y-0.5 transition-all duration-300 flex justify-center items-center gap-2">
+                        <span>Log In</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
                     </button>
+
+                    <div class="text-center pt-4">
+                        <a href="index.html" class="text-sm text-textLight hover:text-primary transition-colors">Back to
+                            Home</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script>
-        let currentRole = '';
+    <script type="module">
+        import { loginUser, getFriendlyErrorMessage } from './assets/js/auth.js';
 
-        function selectRole(role) {
-            currentRole = role;
-            document.getElementById('roleSelection').classList.add('hidden');
-            document.getElementById('loginForm').classList.remove('hidden');
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
 
-            const iconContainer = document.getElementById('roleIcon');
-            const title = document.getElementById('roleTitle');
-
-            if (role === 'student') {
-                iconContainer.className = 'w-16 h-16 bg-blue-100 text-primary rounded-full flex items-center justify-center mx-auto mb-4';
-                iconContainer.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>';
-                title.textContent = 'Student Login';
-            } else {
-                iconContainer.className = 'w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4';
-                iconContainer.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>';
-                title.textContent = 'Teacher Login';
-            }
-
-            document.getElementById('password').value = '';
-            document.getElementById('errorMessage').classList.add('hidden');
-            document.getElementById('password').focus();
-        }
-
-        function backToSelection() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('roleSelection').classList.remove('hidden');
-            currentRole = '';
-        }
-
-        function handleLogin(e) {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // UI Loading State
+            const originalBtnContent = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Logging in...';
+            errorMessage.classList.add('hidden');
+
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
 
-            let isValid = false;
+            const result = await loginUser(email, password);
 
-            if (currentRole === 'student' && password === 'siswa123') {
-                isValid = true;
-            } else if (currentRole === 'teacher' && password === 'admin123') {
-                isValid = true;
-            }
-
-            if (isValid) {
-                localStorage.setItem('user_role', currentRole);
-                if (currentRole === 'teacher') {
-                    window.location.href = 'teacher-dashboard.html';
-                } else {
-                    window.location.href = 'reading-list.html';
-                }
+            if (result.success) {
+                window.location.href = 'index.html';
             } else {
+                errorMessage.textContent = getFriendlyErrorMessage(result.code);
                 errorMessage.classList.remove('hidden');
-                document.getElementById('password').classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnContent;
+            }
+        });
+
+        // Toggle Password Visibility
+        window.togglePassword = function () {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
             }
         }
     </script>
