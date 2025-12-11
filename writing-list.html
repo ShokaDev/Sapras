@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Writing - Nusa Literacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C81',
+                        secondary: '#F8FAFC',
+                        accent: '#FFD700',
+                        textMain: '#1E293B',
+                        textLight: '#64748B'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="text-textMain bg-secondary min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Data-driven Logo/Home Link -->
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div
+                        class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white group-hover:bg-blue-700 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-lg text-primary">Nusa Literacy</span>
+                </a>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm font-medium text-textLight hover:text-primary">Home</a>
+                    <div class="h-4 w-px bg-gray-200"></div>
+                    <span class="text-sm font-medium text-primary">Writing Center</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-accent font-bold tracking-wider uppercase text-xs mb-2 block">Writing Practice</span>
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">Choose Your Challenge</h1>
+                <p class="text-textLight text-lg">Select a topic based on local wisdom and start expressing your ideas.
+                    Your progress is saved automatically.</p>
+            </div>
+
+            <!-- Task Grid -->
+            <div id="task-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Loading State -->
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-400 animate-pulse">Loading writing tasks...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center text-sm text-gray-400">
+            &copy; 2024 Nusa Literacy
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/writing-core.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('task-grid');
+            const tasks = WritingCore.getTasks();
+
+            if (tasks.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-gray-500">No tasks available at the moment.</div>';
+                return;
+            }
+
+            let html = '';
+            tasks.forEach(task => {
+                // Determine badge color
+                let badgeClass = 'bg-blue-100 text-blue-700';
+                if (task.difficulty === 'Easy') badgeClass = 'bg-green-100 text-green-700';
+                if (task.difficulty === 'Medium') badgeClass = 'bg-yellow-100 text-yellow-700';
+                if (task.difficulty === 'Hard') badgeClass = 'bg-red-100 text-red-700';
+
+                html += `
+                <a href="writing-page.html?id=${task.id}" class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-100 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="inline-flex px-3 py-1 bg-gray-50 text-gray-500 text-xs font-medium rounded-full border border-gray-100">
+                            ${task.category}
+                        </span>
+                        <span class="inline-flex px-2 py-0.5 ${badgeClass} text-xs font-bold rounded">
+                            ${task.difficulty}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">${task.title}</h3>
+                    <p class="text-textLight text-sm leading-relaxed mb-6 flex-grow">
+                        ${task.description}
+                    </p>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-50 mt-auto">
+                        <span class="text-xs text-textLight font-medium flex items-center gap-1">
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                             Start Writing
+                        </span>
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+                `;
+            });
+
+            grid.innerHTML = html;
+        });
+    </script>
+</body>
+
+</html>

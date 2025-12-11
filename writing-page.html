@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer - Nusa Literacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C81',
+                        secondary: '#F1F5F9', // Slate 100
+                        paper: '#FFFFFF',
+                        textMain: '#1E293B',
+                        textLight: '#64748B'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .editor-area:focus {
+            outline: none;
+        }
+
+        .toolbar-btn {
+            @apply p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors;
+        }
+
+        /* Custom scrollbar for editor */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+
+<body class="bg-secondary h-screen flex flex-col overflow-hidden font-sans">
+
+    <!-- Top Navigation Bar -->
+    <header
+        class="h-14 bg-white border-b border-gray-200 flex-none z-30 px-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-4">
+            <a href="writing-list.html"
+                class="p-1.5 text-gray-400 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </a>
+            <div class="hidden sm:block h-6 w-px bg-gray-200"></div>
+            <div>
+                <h1 class="text-sm font-semibold text-gray-900 leading-none mb-0.5" id="task-title">Untitled Draft</h1>
+                <p class="text-[10px] uppercase tracking-wider font-bold text-gray-500" id="task-cat">Category</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- Auto-save Indicator -->
+            <div class="flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full border border-gray-100">
+                <div id="save-dot" class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <span id="save-text" class="text-xs font-medium text-gray-500">Saved</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <button onclick="saveContent(true)"
+                class="p-2 text-gray-500 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors"
+                title="Save Now">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                    </path>
+                </svg>
+            </button>
+            <button onclick="exportContent()"
+                class="hidden sm:flex items-center gap-2 px-4 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                <span>Export</span>
+                <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="flex-grow flex flex-col md:flex-row overflow-hidden relative">
+
+        <!-- Left Panel: Instruction (Collapsible) -->
+        <aside id="info-panel"
+            class="w-full md:w-80 flex-none bg-white border-r border-gray-200 flex flex-col z-20 absolute md:relative h-full transform transition-transform duration-300 md:translate-x-0 -translate-x-full shadow-lg md:shadow-none">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Prompt</h2>
+                <button onclick="togglePanel()" class="md:hidden text-gray-400 hover:text-gray-900">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto p-6 space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2" id="panel-title">Task Title</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed" id="panel-desc">Task description...</p>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-xs font-bold text-blue-700 uppercase mb-1">Writing Prompt</h4>
+                            <p class="text-sm text-blue-900 italic" id="panel-prompt">Prompt goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guidelines -->
+                <div class="border-t border-gray-100 pt-6">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Guidelines</h4>
+                    <ul class="text-sm text-gray-500 space-y-2 list-disc pl-4">
+                        <li>Focus on clarity and structure.</li>
+                        <li>Use standard Indonesian or English as required.</li>
+                        <li>Check your spelling before exporting.</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Toggle Panel Button (Top Left of Editor) -->
+        <button id="panel-toggle-btn" onclick="togglePanel()"
+            class="absolute top-4 left-4 z-10 p-2 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-400 hover:text-primary md:hidden">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+            </svg>
+        </button>
+
+        <!-- Right Panel: Editor -->
+        <main class="flex-grow flex flex-col bg-slate-50 relative overflow-hidden">
+
+            <!-- Toolbar -->
+            <div
+                class="h-12 bg-white border-b border-gray-200 flex items-center justify-center gap-2 shadow-sm flex-none z-10 px-4">
+                <button class="toolbar-btn font-bold" title="Bold">B</button>
+                <button class="toolbar-btn italic" title="Italic">I</button>
+                <div class="h-4 w-px bg-gray-200 mx-2"></div>
+                <button class="toolbar-btn text-xs font-serif" title="Serif Font">Serif</button>
+                <button class="toolbar-btn text-xs font-mono" title="Mono Font">Mono</button>
+                <div class="h-4 w-px bg-gray-200 mx-2"></div>
+                <button class="toolbar-btn" title="Undo">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Editor Wrapper -->
+            <div class="flex-grow overflow-y-auto flex justify-center p-4 sm:p-8 md:p-12 cursor-text"
+                onclick="document.getElementById('editor').focus()">
+                <div
+                    class="w-full max-w-3xl min-h-[800px] bg-white shadow-sm border border-gray-200 rounded-none sm:rounded-lg p-8 md:p-16 relative">
+                    <textarea id="editor"
+                        class="w-full h-full resize-none outline-none font-serif text-lg leading-loose text-gray-800 placeholder-gray-300"
+                        placeholder="Start typing your draft here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Bottom Status Bar -->
+            <div
+                class="h-8 bg-white border-t border-gray-200 flex-none flex justify-between items-center px-4 text-xs text-gray-400">
+                <span id="word-count">0 words</span>
+                <span>Nusa Literacy Editor v1.0</span>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="assets/js/writing-core.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskId = urlParams.get('id');
+        const editor = document.getElementById('editor');
+        const saveDot = document.getElementById('save-dot');
+        const saveText = document.getElementById('save-text');
+        const wordCountEl = document.getElementById('word-count');
+        const panel = document.getElementById('info-panel');
+
+        function togglePanel() {
+            panel.classList.toggle('-translate-x-full');
+            panel.classList.toggle('shadow-lg'); // toggle shadow when floating
+        }
+
+        function init() {
+            if (!taskId) { window.location.href = 'writing-list.html'; return; }
+
+            const task = WritingCore.getTask(taskId);
+            if (task) {
+                document.getElementById('task-title').textContent = task.title;
+                document.getElementById('task-cat').textContent = task.category;
+                document.getElementById('panel-title').textContent = task.title;
+                document.getElementById('panel-desc').textContent = task.description;
+                document.getElementById('panel-prompt').textContent = task.prompt;
+                document.title = `${task.title} - Writer`;
+            }
+
+            const draft = WritingCore.getDraft(taskId);
+            if (draft) {
+                editor.value = draft.content;
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            const text = editor.value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            wordCountEl.textContent = `${words} words`;
+        }
+
+        let saveTimeout;
+        editor.addEventListener('input', () => {
+            saveDot.className = 'w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse';
+            saveText.textContent = 'Saving...';
+            updateStats();
+
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveContent(false);
+            }, 1000);
+        });
+
+        function saveContent(manual) {
+            const res = WritingCore.saveDraft(taskId, editor.value);
+            if (res.success) {
+                saveDot.className = 'w-1.5 h-1.5 rounded-full bg-green-500';
+                saveText.textContent = manual ? 'Saved just now' : 'Auto-saved';
+
+                if (manual) {
+                    // flash effect
+                    saveText.classList.add('text-green-600');
+                    setTimeout(() => saveText.classList.remove('text-green-600'), 500);
+                }
+            }
+        }
+
+        function exportContent() {
+            WritingCore.exportToTxt(taskId, editor.value);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard - Reading Corner Vokasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F4C81',
+            secondary: '#F5F7FA',
+            accent: '#FFD700',
+            success: '#10B981',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* simple small notification */
+    .toast {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      z-index: 60;
+      background: white;
+      border-left: 4px solid #0F4C81;
+      box-shadow: 0 6px 20px rgba(16, 24, 40, 0.08);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body class="bg-secondary min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex items-center gap-2">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+            </path>
+          </svg>
+          <span class="font-bold text-xl text-primary">Teacher Dashboard</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-500">Welcome, Teacher</span>
+          <button id="logoutBtn" class="text-red-500 hover:text-red-700 font-medium text-sm">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="max-w-6xl mx-auto px-4 py-10">
+
+    <!-- Tabs -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <div class="flex items-center gap-3">
+          <button id="tab-dashboard"
+            class="px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-blue-700 transition">Overview</button>
+          <button id="tab-publish"
+            class="px-4 py-2 rounded-lg bg-white text-primary border border-primary font-medium hover:bg-primary hover:text-white transition">Publish
+            Material</button>
+        </div>
+      </div>
+      <p class="text-sm text-textLight mt-3">Manage reading materials and quizzes. Use the Publish tab to add or
+        edit material.</p>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="view-dashboard" class="space-y-6">
+
+      <!-- Stats -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-sm text-textLight">Total Materials</p>
+          <p id="stat-total" class="text-3xl font-bold text-gray-900 mt-3">0</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-sm text-textLight">Custom Materials</p>
+          <p id="stat-custom" class="text-3xl font-bold text-gray-900 mt-3">0</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-sm text-textLight">Published Today</p>
+          <p id="stat-today" class="text-3xl font-bold text-gray-900 mt-3">0</p>
+        </div>
+      </div>
+
+      <!-- Materials Table -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold">Materials</h2>
+          <button id="open-publish" class="px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-blue-700 transition">+ Add New</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="text-xs text-textLight uppercase">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Read Time</th>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="materials-tbody" class="divide-y">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publish / Form View -->
+    <div id="view-publish" class="hidden">
+      <div class="bg-white rounded-2xl shadow-lg p-8">
+        <h1 id="form-title" class="text-2xl font-bold text-gray-900 mb-6">Upload New Reading Material</h1>
+
+        <form id="upload-form" class="space-y-6">
+          <!-- Hidden ID for edit -->
+          <input type="hidden" id="material-id" />
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <input type="text" id="title" required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                placeholder="e.g. Workplace Safety Guide">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <select id="category"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                <option value="Transportation">Transportation</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Culture">Culture</option>
+                <option value="Technology">Technology</option>
+                <option value="Business">Business</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Estimated Read Time</label>
+            <input type="text" id="readTime" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+              placeholder="e.g. 5 Mins">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Content (HTML Supported)</label>
+            <p class="text-xs text-gray-500 mb-2">Use &lt;p&gt; for paragraphs and &lt;h2&gt; for headings. You can also use <code>&lt;span class="glossary-term"&gt;word&lt;span class="tooltip"&gt;definition&lt;/span&gt;&lt;/span&gt;</code> for glossary.</p>
+            <textarea id="content" required rows="10"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-mono text-sm"
+              placeholder="<p>Write your article content here...</p>"></textarea>
+          </div>
+
+          <div class="border-t border-gray-200 pt-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">Quiz Questions (3 Required)</h2>
+
+            <div id="questions-container" class="space-y-6">
+              <!-- Question blocks -->
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Question 1</label>
+                <input type="text" name="q1_text" required class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter question...">
+                <div class="grid grid-cols-3 gap-3">
+                  <input type="text" name="q1_a" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option A">
+                  <input type="text" name="q1_b" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option B">
+                  <input type="text" name="q1_c" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option C">
+                </div>
+                <div class="mt-3">
+                  <label class="text-xs font-bold text-gray-500 uppercase">Correct Answer</label>
+                  <select name="q1_ans" class="ml-2 border border-gray-300 rounded px-2 py-1">
+                    <option value="a">Option A</option>
+                    <option value="b">Option B</option>
+                    <option value="c">Option C</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Question 2</label>
+                <input type="text" name="q2_text" required class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter question...">
+                <div class="grid grid-cols-3 gap-3">
+                  <input type="text" name="q2_a" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option A">
+                  <input type="text" name="q2_b" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option B">
+                  <input type="text" name="q2_c" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option C">
+                </div>
+                <div class="mt-3">
+                  <label class="text-xs font-bold text-gray-500 uppercase">Correct Answer</label>
+                  <select name="q2_ans" class="ml-2 border border-gray-300 rounded px-2 py-1">
+                    <option value="a">Option A</option>
+                    <option value="b">Option B</option>
+                    <option value="c">Option C</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Question 3</label>
+                <input type="text" name="q3_text" required class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter question...">
+                <div class="grid grid-cols-3 gap-3">
+                  <input type="text" name="q3_a" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option A">
+                  <input type="text" name="q3_b" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option B">
+                  <input type="text" name="q3_c" required class="px-3 py-2 border border-gray-300 rounded-md" placeholder="Option C">
+                </div>
+                <div class="mt-3">
+                  <label class="text-xs font-bold text-gray-500 uppercase">Correct Answer</label>
+                  <select name="q3_ans" class="ml-2 border border-gray-300 rounded px-2 py-1">
+                    <option value="a">Option A</option>
+                    <option value="b">Option B</option>
+                    <option value="c">Option C</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="pt-6 flex gap-3">
+            <button id="publish-btn" type="submit" class="flex-1 py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1">Publish Material</button>
+            <button id="cancel-edit" type="button" class="hidden py-4 px-6 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- simple toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+    // ---------- Auth ----------
+    const role = localStorage.getItem('user_role');
+    if (role !== 'teacher') {
+      // redirect to login if not teacher (preserve previous behavior)
+      window.location.href = 'login.html';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('user_role');
+      window.location.href = 'login.html';
+    });
+
+    // ---------- UI Tabs ----------
+    const tabDashboard = document.getElementById('tab-dashboard');
+    const tabPublish = document.getElementById('tab-publish');
+    const viewDashboard = document.getElementById('view-dashboard');
+    const viewPublish = document.getElementById('view-publish');
+    const openPublishBtn = document.getElementById('open-publish');
+
+    function showDashboard() {
+      tabDashboard.classList.add('bg-primary', 'text-white');
+      tabDashboard.classList.remove('bg-white', 'text-primary');
+      tabPublish.classList.remove('bg-primary', 'text-white');
+      tabPublish.classList.add('bg-white', 'text-primary');
+      viewDashboard.classList.remove('hidden');
+      viewPublish.classList.add('hidden');
+      // reset form state when switching away
+      resetForm();
+    }
+
+    function showPublish() {
+      tabPublish.classList.add('bg-primary', 'text-white');
+      tabPublish.classList.remove('bg-white', 'text-primary');
+      tabDashboard.classList.remove('bg-primary', 'text-white');
+      tabDashboard.classList.add('bg-white', 'text-primary');
+      viewPublish.classList.remove('hidden');
+      viewDashboard.classList.add('hidden');
+    }
+
+    tabDashboard.addEventListener('click', showDashboard);
+    tabPublish.addEventListener('click', showPublish);
+    openPublishBtn.addEventListener('click', showPublish);
+
+    // ---------- Data helpers ----------
+    const builtIn = [
+      { id: 'ferry', title: 'Ferry Safety Manual', category: 'Transportation', readTime: '5 Mins', type: 'built-in' },
+      { id: 'hotel', title: 'Hotel Check-in Procedure', category: 'Hospitality', readTime: '7 Mins', type: 'built-in' },
+      { id: 'festival', title: 'Bintan Literary Festival 2025', category: 'Culture', readTime: '4 Mins', type: 'built-in' }
+    ];
+
+    function loadCustom() {
+      return JSON.parse(localStorage.getItem('custom_content') || '[]');
+    }
+
+    function saveCustom(list) {
+      localStorage.setItem('custom_content', JSON.stringify(list));
+    }
+
+    // ---------- Render Materials Table & Stats ----------
+    const tbody = document.getElementById('materials-tbody');
+    const statTotal = document.getElementById('stat-total');
+    const statCustom = document.getElementById('stat-custom');
+    const statToday = document.getElementById('stat-today');
+
+    function renderMaterials() {
+      const custom = loadCustom();
+      const all = [...builtIn, ...custom.map(c => ({ id: c.id, title: c.title, category: c.category, readTime: c.readTime, type: 'custom' }))];
+
+      // stats
+      statTotal.textContent = all.length;
+      statCustom.textContent = custom.length;
+
+      // published today: check localStorage reading_progress timestamps for today for custom items (approx)
+      const today = (d => `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`)(new Date());
+      let publishedToday = 0;
+      custom.forEach(c => {
+        const progress = JSON.parse(localStorage.getItem(`reading_progress_${c.id}`) || 'null');
+        if (progress && progress.date) {
+          const d = new Date(progress.date);
+          const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+          if (key === today) publishedToday++;
+        }
+      });
+      statToday.textContent = publishedToday;
+
+      // render rows
+      tbody.innerHTML = '';
+      all.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        tr.innerHTML = `
+          <td class="px-4 py-3 align-top">${item.title}</td>
+          <td class="px-4 py-3 align-top">${item.category || '-'}</td>
+          <td class="px-4 py-3 align-top">${item.readTime || '-'}</td>
+          <td class="px-4 py-3 align-top">${item.type === 'custom' ? 'Custom' : 'Built-in'}</td>
+          <td class="px-4 py-3 align-top">
+            <div class="flex items-center gap-2">
+              <button data-id="${item.id}" class="view-btn text-sm text-primary font-medium hover:underline">View</button>
+              ${item.type === 'custom' ? `<button data-id="${item.id}" class="edit-btn text-sm text-yellow-600 font-medium hover:underline">Edit</button><button data-id="${item.id}" class="delete-btn text-sm text-red-600 font-medium hover:underline">Delete</button>` : ''}
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // bind actions
+      document.querySelectorAll('.view-btn').forEach(b => b.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        // view simply open read-page.html with id
+        window.open(`read-page.html?id=${encodeURIComponent(id)}`, '_blank');
+      }));
+
+      document.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        startEdit(id);
+      }));
+
+      document.querySelectorAll('.delete-btn').forEach(b => b.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        if (confirm('Delete this material? This action cannot be undone.')) {
+          deleteMaterial(id);
+        }
+      }));
+    }
+
+    // ---------- CRUD for custom materials ----------
+    function deleteMaterial(id) {
+      let list = loadCustom();
+      list = list.filter(i => i.id !== id);
+      saveCustom(list);
+      showToast('Material deleted');
+      renderMaterials();
+    }
+
+    function startEdit(id) {
+      const list = loadCustom();
+      const item = list.find(i => i.id === id);
+      if (!item) return alert('Item not found.');
+
+      // populate form
+      document.getElementById('material-id').value = item.id;
+      document.getElementById('title').value = item.title;
+      document.getElementById('category').value = item.category;
+      document.getElementById('readTime').value = item.readTime;
+      document.getElementById('content').value = item.content;
+
+      // populate quiz fields (assume 3)
+      if (item.quiz && item.quiz.length >= 3) {
+        for (let i = 1; i <= 3; i++) {
+          const q = item.quiz[i - 1];
+          document.querySelector(`[name="q${i}_text"]`).value = q.question || '';
+          document.querySelector(`[name="q${i}_a"]`).value = q.options.a || '';
+          document.querySelector(`[name="q${i}_b"]`).value = q.options.b || '';
+          document.querySelector(`[name="q${i}_c"]`).value = q.options.c || '';
+          document.querySelector(`[name="q${i}_ans"]`).value = q.answer || 'a';
+        }
+      }
+
+      // switch to publish tab and change label
+      document.getElementById('form-title').textContent = 'Edit Material';
+      document.getElementById('publish-btn').textContent = 'Save Changes';
+      document.getElementById('cancel-edit').classList.remove('hidden');
+      showPublish();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      document.getElementById('material-id').value = '';
+      document.getElementById('title').value = '';
+      document.getElementById('category').value = 'Transportation';
+      document.getElementById('readTime').value = '';
+      document.getElementById('content').value = '';
+      for (let i = 1; i <= 3; i++) {
+        document.querySelector(`[name="q${i}_text"]`).value = '';
+        document.querySelector(`[name="q${i}_a"]`).value = '';
+        document.querySelector(`[name="q${i}_b"]`).value = '';
+        document.querySelector(`[name="q${i}_c"]`).value = '';
+        document.querySelector(`[name="q${i}_ans"]`).value = 'a';
+      }
+      document.getElementById('form-title').textContent = 'Upload New Reading Material';
+      document.getElementById('publish-btn').textContent = 'Publish Material';
+      document.getElementById('cancel-edit').classList.add('hidden');
+    }
+
+    // Publish or Save (edit)
+    document.getElementById('upload-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const idField = document.getElementById('material-id');
+      const existingId = idField.value;
+      const title = document.getElementById('title').value.trim();
+      const category = document.getElementById('category').value;
+      const readTime = document.getElementById('readTime').value.trim();
+      const content = document.getElementById('content').value.trim();
+
+      // collect quiz
+      const quiz = [];
+      for (let i = 1; i <= 3; i++) {
+        const qText = document.querySelector(`[name="q${i}_text"]`).value.trim();
+        const optA = document.querySelector(`[name="q${i}_a"]`).value.trim();
+        const optB = document.querySelector(`[name="q${i}_b"]`).value.trim();
+        const optC = document.querySelector(`[name="q${i}_c"]`).value.trim();
+        const ans = document.querySelector(`[name="q${i}_ans"]`).value;
+
+        quiz.push({
+          question: qText,
+          options: { a: optA, b: optB, c: optC },
+          answer: ans
+        });
+      }
+
+      let list = loadCustom();
+
+      if (existingId) {
+        // edit mode
+        const idx = list.findIndex(i => i.id === existingId);
+        if (idx !== -1) {
+          list[idx] = { id: existingId, title, category, readTime, content, quiz, updated: new Date().toISOString() };
+          saveCustom(list);
+          showToast('Material updated');
+        } else {
+          showToast('Material not found', true);
+        }
+      } else {
+        // new
+        const newId = 'custom_' + Date.now();
+        list.push({ id: newId, title, category, readTime, content, quiz, created: new Date().toISOString() });
+        saveCustom(list);
+        showToast('Material published');
+      }
+
+      resetForm();
+      renderMaterials();
+      showDashboard();
+    });
+
+    // cancel edit
+    document.getElementById('cancel-edit').addEventListener('click', (e) => {
+      e.preventDefault();
+      resetForm();
+      showDashboard();
+    });
+
+    // deleteMaterial implemented above
+
+    // ---------- Toast ----------
+    const toastEl = document.getElementById('toast');
+    let toastTimeout;
+    function showToast(msg, isError = false) {
+      toastEl.textContent = msg;
+      toastEl.style.borderLeftColor = isError ? '#EF4444' : '#0F4C81';
+      toastEl.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.add('hidden');
+      }, 2500);
+    }
+
+    // ---------- init ----------
+    renderMaterials();
+    showDashboard();
+
+    // expose delete for console debugging if needed
+    window._deleteMaterial = deleteMaterial;
+
+  </script>
+</body>
+
+</html>
