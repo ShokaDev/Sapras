@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - EduCorner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="assets/js/content-data.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C81',
+                        secondary: '#F9FAFB',
+                        success: '#10B981',
+                        error: '#EF4444'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-secondary text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-xl text-primary">EduCorner</span>
+                <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full font-medium">Quiz Mode</span>
+            </div>
+            <a href="reading-list.html" class="text-sm text-gray-500 hover:text-gray-900 font-medium">Exit Quiz</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
+
+        <div class="w-full max-w-2xl">
+
+            <!-- Progress Bar -->
+            <div class="mb-6 flex items-center justify-between text-sm text-gray-500">
+                <span id="progress-text">Question 1 of 5</span>
+                <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="quiz-card" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+                <div class="p-8">
+                    <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-900 mb-8 leading-relaxed">
+                        Loading Question...
+                    </h2>
+
+                    <div id="answers-container" class="space-y-3">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Footer / Next Button area -->
+                <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+                    <button id="next-btn"
+                        class="hidden px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        Next Question
+                    </button>
+                    <span id="feedback-msg" class="hidden mr-auto py-2 font-medium"></span>
+                </div>
+            </div>
+
+            <!-- Result Card (Hidden) -->
+            <div id="result-card" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                <div
+                    class="w-20 h-20 bg-green-50 text-success rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
+                <p class="text-gray-500 mb-8">You scored <span id="final-score" class="font-bold text-gray-900">0</span>
+                    out of <span id="final-total">0</span></p>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="location.reload()"
+                        class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">Retake
+                        Quiz</button>
+                    <a href="reading-list.html"
+                        class="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">Back
+                        to Reading List</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // --- Data Loading ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const contentId = urlParams.get('id') || 'festival';
+
+        // Load data safely
+        let data = window.contentData ? window.contentData[contentId] : null;
+        if (!data && window.contentData) data = window.contentData['festival']; // Fallback
+
+        // --- State ---
+        let currentQIndex = 0;
+        let score = 0;
+        const totalQuestions = data ? data.quiz.length : 0;
+
+        // --- DOM ---
+        const qTextEl = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const quizCard = document.getElementById('quiz-card');
+        const resultCard = document.getElementById('result-card');
+        const finalScoreEl = document.getElementById('final-score');
+        const finalTotalEl = document.getElementById('final-total');
+
+        if (!data) {
+            qTextEl.textContent = "Error loading content data.";
+        } else {
+            initGame();
+        }
+
+        function initGame() {
+            renderQuestion(0);
+        }
+
+        function renderQuestion(index) {
+            if (index >= totalQuestions) {
+                showResults();
+                return;
+            }
+
+            // Update UI
+            currentQIndex = index;
+            const q = data.quiz[index];
+            qTextEl.textContent = q.q;
+
+            // Progress
+            const progressPercent = ((index) / totalQuestions) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `Question ${index + 1} of ${totalQuestions}`;
+
+            // Reset interaction
+            answersContainer.innerHTML = '';
+            nextBtn.classList.add('hidden');
+            feedbackMsg.classList.add('hidden');
+            feedbackMsg.textContent = '';
+
+            // Options
+            Object.entries(q.opts).forEach(([key, val]) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 flex items-center group";
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full border border-gray-300 mr-4 flex items-center justify-center text-xs text-gray-400 font-bold group-hover:border-primary group-hover:text-primary transition-colors">${key.toUpperCase()}</span>
+                    <span class="text-gray-700 font-medium">${val}</span>
+                `;
+                btn.onclick = () => handleAnswer(btn, key, q.ans);
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(btnElement, selected, correct) {
+            // Disable all buttons
+            const allBtns = answersContainer.querySelectorAll('button');
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-60', 'cursor-not-allowed');
+            });
+
+            // Check answer
+            const isCorrect = selected === correct;
+            if (isCorrect) score++;
+
+            // Highlight selected
+            btnElement.classList.remove('opacity-60', 'hover:border-blue-300', 'hover:bg-blue-50', 'border-gray-200');
+            btnElement.classList.add('border-2', isCorrect ? 'border-green-500' : 'border-red-500', isCorrect ? 'bg-green-50' : 'bg-red-50');
+
+            // Update icon inside button
+            const icon = btnElement.querySelector('span:first-child');
+            icon.classList.remove('border-gray-300', 'text-gray-400');
+            icon.classList.add(isCorrect ? 'border-green-500' : 'border-red-500', isCorrect ? 'text-green-600' : 'text-red-600');
+            icon.textContent = isCorrect ? '✓' : '✕';
+
+            // Show feedback text
+            feedbackMsg.textContent = isCorrect ? "Correct!" : "Incorrect.";
+            feedbackMsg.className = `mr-auto py-2 font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedbackMsg.classList.remove('hidden');
+
+            // Show Next Button
+            nextBtn.textContent = (currentQIndex === totalQuestions - 1) ? "Finish Quiz" : "Next Question";
+            nextBtn.classList.remove('hidden');
+            nextBtn.onclick = () => renderQuestion(currentQIndex + 1);
+        }
+
+        function showResults() {
+            quizCard.classList.add('hidden');
+            resultCard.classList.remove('hidden');
+            finalScoreEl.textContent = score;
+            finalTotalEl.textContent = totalQuestions;
+            progressBar.style.width = '100%';
+
+            // Save Progress
+            const progress = { score, total: totalQuestions, date: new Date().toISOString() };
+            localStorage.setItem(`reading_progress_${contentId}`, JSON.stringify(progress));
+        }
+
+    </script>
+</body>
+
+</html>
